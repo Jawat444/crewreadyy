@@ -120,7 +120,7 @@ export function Resources() {
   });
 
   return (
-    <div className="flex min-h-full w-full flex-col bg-space p-3 text-text sm:p-5 select-none font-sans overflow-y-auto">
+    <div className="flex min-h-full w-full flex-col bg-space p-3 text-text sm:p-5 pb-28 md:pb-5 select-none font-sans overflow-y-auto">
       {/* Top Header Strip */}
       <header className="flex flex-shrink-0 items-center justify-between gap-3 border-b-2 border-line/40 pb-3">
         <div className="flex items-center gap-2">

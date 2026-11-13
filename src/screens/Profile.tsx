@@ -111,7 +111,7 @@ export function Profile() {
   const rank = getRankTitle(badges.length);
 
   return (
-    <div className="flex h-full w-full flex-col overflow-y-auto bg-space p-3 text-text sm:p-5 select-none font-sans">
+    <div className="flex h-full w-full flex-col overflow-y-auto bg-space p-3 text-text sm:p-5 pb-28 md:pb-5 select-none font-sans">
       {/* Top Header */}
       <header className="flex flex-shrink-0 items-center justify-between border-b-2 border-line/40 pb-3">
         <div className="flex items-center gap-2">

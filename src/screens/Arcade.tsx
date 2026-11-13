@@ -25,7 +25,7 @@ export function Arcade() {
   const bonusReady = streakPaidDay !== today;
 
   return (
-    <div className="flex h-full w-full flex-col overflow-y-auto bg-space p-3 text-text select-none font-sans sm:p-5">
+    <div className="flex h-full w-full flex-col overflow-y-auto bg-space p-3 text-text pb-28 md:pb-5 select-none font-sans sm:p-5">
       <header className="flex flex-shrink-0 items-center justify-between border-b-2 border-line/40 pb-3">
         <button type="button" onClick={() => go('home')} className="flex min-h-[2.5rem] items-center gap-1.5 rounded-full border border-line bg-panel-up px-3 font-display text-sm font-bold cursor-pointer">
           <ArrowLeft size={16} /> {bn ? 'হোম' : 'Home'}

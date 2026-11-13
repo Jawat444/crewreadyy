@@ -1,0 +1,99 @@
+{
+  "project": "Crew Ready: Beyond Us",
+  "total_duration_sec": 235.0,
+  "total_frames": 7050,
+  "target_fps": 30,
+  "aspect_ratio": "16:9",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "compliance": {
+    "pitch_guideline": "240 SECONDS OF GLORY (NASA Space Apps)",
+    "maximum_allowed_sec": 240.0,
+    "achieved_duration_sec": 235.0,
+    "under_limit_buffer_sec": 5.0,
+    "human_design_standards": "Enforced per docs/human design standards.md",
+    "verified_names": ["Ahnaf", "Tasfi", "Riyad", "Ormi", "Jawat", "Wasima"]
+  },
+  "scenes": [
+    {
+      "scene_id": "scene_01_hook",
+      "start_sec": 0.0,
+      "end_sec": 20.0,
+      "duration_sec": 20.0,
+      "start_frame": 0,
+      "duration_frames": 600,
+      "act": "Act 1: The Urgent Hook & AI Companion",
+      "narration": "What if your decision could save humanity? Are you ready? Don't worry. Crew Ready will make you ready. It is a space survival game where kids become junior astronauts, team up with an AI buddy named Twinkle, and race to find a new home for humans. All powered by real NASA data."
+    },
+    {
+      "scene_id": "scene_02_problem_statement",
+      "start_sec": 20.0,
+      "end_sec": 50.0,
+      "duration_sec": 30.0,
+      "start_frame": 600,
+      "duration_frames": 900,
+      "act": "Act 2: The Core Challenge & Gen Alpha Voice",
+      "narration": "We agree with the challenge statement. Most space games are either way too hard or have zero real science. Crew Ready fixes that. The game gets harder based on live space weather because real space has no easy mode. Twinkle talks like kids today using Gen Alpha terms, so learning never feels boring like homework. Plus, the game works in both Bangla and English, making space science easy to access for kids across Bangladesh and impacts locally."
+    },
+    {
+      "scene_id": "scene_03_team_inspiration",
+      "start_sec": 50.0,
+      "end_sec": 85.0,
+      "duration_sec": 35.0,
+      "start_frame": 1500,
+      "duration_frames": 1050,
+      "act": "Act 3: Cultural Roots & Team Young Sparks",
+      "narration": "Hi, we are Team Young Sparks of Bangladesh x Script Pair, a group of young creators from Bangladesh with one shared dream: exploring the universe. For many of us, it started with Twinkle, Twinkle, Little Star and Bangladesh's national poet Kazi Nazrul Islam's poem Shonkolpo, referring to the curiosity to know the unknown. Kids today have this exact same curiosity, but their attention spans are very short. We built Crew Ready so their curiosity stays alive and turns into real learning."
+    },
+    {
+      "scene_id": "scene_04_gameplay_mechanics",
+      "start_sec": 85.0,
+      "end_sec": 125.0,
+      "duration_sec": 40.0,
+      "start_frame": 2550,
+      "duration_frames": 1200,
+      "act": "Act 4: Six Coupled Missions & Resource Ledger",
+      "narration": "Earth is in many trouble, getting out of living conditions, and running out of resources. Young gamers take command as Orbit or Nova to find a new safe planet. Every choice costs power, air, water, or food. Choose wisely and your crew survives. Run out and the mission fails. Across six levels built on NASA data: you pack your rocket carefully, dodge solar storms, land safely on Mars, survive a dust storm, and grow food in space. Finally, you rescue your crewmates, because nobody saves humanity alone."
+    },
+    {
+      "scene_id": "scene_05_team_roster",
+      "start_sec": 125.0,
+      "end_sec": 153.0,
+      "duration_sec": 28.0,
+      "start_frame": 3750,
+      "duration_frames": 840,
+      "act": "Act 5: Engineering Roster Showcase",
+      "narration": "Speaking of crewmates, meet ours: Ahnaf researched what keeps young gamers engaged. Tasfi gathered real NASA data so every fact is accurate. Riyad built the core game engine and led the development. Ormi designed the scenes. Jawat managed the data and backend. And Wasima wrote the script. Together, we brought Crew Ready to life.",
+      "team_members": [
+        { "name": "Ahnaf", "role": "Gamification & Engagement", "contribution": "Researched what keeps young gamers engaged & designed reward loops" },
+        { "name": "Tasfi", "role": "NASA Open Data Verification", "contribution": "Gathered real NASA DONKI/NOAA data so every in-game fact is accurate" },
+        { "name": "Riyad", "role": "Lead Developer & Engine", "contribution": "Built the core simulation engine, decision math & state management" },
+        { "name": "Ormi", "role": "3D Environments & Scene Design", "contribution": "Designed atmospheric Mars environments, 3D scenes & user interfaces" },
+        { "name": "Jawat", "role": "Data Architecture & Backend", "contribution": "Managed simulation datasets, offline caching & test suites" },
+        { "name": "Wasima", "role": "Narrative & Scriptwriting", "contribution": "Adapted space science into child-friendly prose and wrote the script" }
+      ]
+    },
+    {
+      "scene_id": "scene_06_science_data_hub",
+      "start_sec": 153.0,
+      "end_sec": 199.0,
+      "duration_sec": 46.0,
+      "start_frame": 4590,
+      "duration_frames": 1380,
+      "act": "Act 6: Verified NASA Open Data & Micro-Skills",
+      "narration": "To keep kids playing, we added fun mini-games like an endless space runner to earn rewards. There is a resources tab to manage supplies, a leaderboard for friendly competition, and a profile to track progress. And the science is 100% real: we use NASA's DONKI data for solar storms, NOAA for space weather, NeoWS for asteroids, and OSDR for growing plants in space. Behind the fun, kids build real-life skills: making smart choices under pressure, planning ahead, and managing limited resources. It is like learning to manage pocket money—just in a spacesuit. They learn real science, practice teamwork, and keep asking what is out there."
+    },
+    {
+      "scene_id": "scene_07_vision_outro",
+      "start_sec": 199.0,
+      "end_sec": 235.0,
+      "duration_sec": 36.0,
+      "start_frame": 5970,
+      "duration_frames": 1080,
+      "act": "Act 7: Future Vision & Call to Action",
+      "narration": "This is just the beginning. Next, we want to add a training tab with focus and memory games and a reels tab where kids can watch and share short space facts. After level six, we plan to add multiplayer rooms so friends can play together on different phones, plus a new planet and more languages. Our goal is simple: spark curiosity and give it room to grow. Just like staring at the stars in the sky amazed our childhood, as poet Nazrul wrote. So, are you ready? No worries. We are. Thank you!"
+    }
+  ]
+}

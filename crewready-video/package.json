@@ -27,8 +27,8 @@
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",
-    "render": "remotion render CrewReady-Landscape out/promo-237s.mp4",
-    "render:portrait": "remotion render CrewReady-Portrait out/promo-237s-portrait.mp4",
+    "render": "remotion render CrewReady-Landscape out/CrewReady-235s.mp4",
+    "render:portrait": "remotion render CrewReady-Portrait out/CrewReady-235s-portrait.mp4",
     "upgrade": "remotion upgrade",
     "lint": "tsc --noEmit"
   },

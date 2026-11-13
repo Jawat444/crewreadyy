@@ -2,7 +2,7 @@
 // title, Play and How to Play on the left; the crew art on the right two-thirds.
 // The bar follows real loading (fonts, images decoded, the save read): at least 1.8 s, at most 5 s.
 import { useEffect, useState } from 'react';
-import { BookOpen, Hand, Orbit as OrbitIcon, Play, RotateCcw, Sparkles, X } from 'lucide-react';
+import { BookOpen, Hand, Orbit as OrbitIcon, Play, RotateCcw, Smartphone, Sparkles, X } from 'lucide-react';
 import { t, useI18n } from '../content/i18n';
 import { useGame } from '../store/game';
 import { useSpace } from '../store/space';
@@ -159,7 +159,7 @@ export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
       </header>
 
       {/* Left zone: title, Play (or the bar), How to Play, Twinkle's Tour */}
-      <main className="relative z-10 flex flex-col justify-center gap-3 sm:gap-4 my-auto max-w-lg md:w-[48%]">
+      <main className="relative z-10 flex flex-col justify-center gap-3 sm:gap-4 my-auto max-w-lg md:w-[50%]">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-none font-extrabold tracking-tight text-text drop-shadow-[0_4px_16px_rgba(0,0,0,0.7)] break-words">
             {t('app.name')}
@@ -167,6 +167,16 @@ export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
           <p className="mt-1.5 font-display text-base sm:text-xl leading-snug font-semibold text-text/90 drop-shadow">
             {t('app.subtitle')}
           </p>
+
+          {/* Small font instruction to rotate device / play in landscape */}
+          <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full border border-cyan-400/40 bg-[#081230]/85 px-3 py-1 font-display text-[11px] sm:text-xs font-semibold text-cyan-200/95 shadow-sm backdrop-blur-md">
+            <Smartphone size={13} className="text-go shrink-0" />
+            <span>
+              {lang === 'bn'
+                ? 'সেরা অভিজ্ঞতার জন্য ফোনটি আড়াআড়ি (landscape) ঘোরাও 🔄'
+                : 'For best experience, rotate your phone to landscape 🔄'}
+            </span>
+          </div>
         </div>
 
         <div className="flex w-full max-w-xs sm:max-w-sm flex-col gap-2.5">
@@ -188,13 +198,13 @@ export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
               aria-label={loadingText}
               className="relative flex h-[3.25rem] w-full items-center overflow-hidden rounded-full border-2 border-go/40 bg-panel/85 p-1"
             >
-              <div className="h-full rounded-full bg-gradient-to-r from-[#0f8f9c] to-go" style={{ width: `${progress}%` }} />
+              <div className="h-full rounded-full bg-gradient-to-r from-[#0f8f9c] to-go transition-all duration-300" style={{ width: `${progress}%` }} />
               <div className="absolute inset-0 flex items-center justify-between px-3.5 font-display text-xs sm:text-sm font-extrabold text-text">
-                <span className="flex items-center gap-1.5 truncate">
+                <span className="flex items-center gap-1.5 min-w-0 pr-2">
                   <Sparkles size={16} className="shrink-0 text-go" />
                   <span className="truncate">{loadingText}</span>
                 </span>
-                <span className="ml-2 tabular-nums text-go">{progress}%</span>
+                <span className="ml-auto tabular-nums text-go shrink-0">{progress}%</span>
               </div>
             </div>
           )}
@@ -202,26 +212,26 @@ export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
           <div className="flex gap-2 w-full">
             <button
               onClick={() => setShowHowToPlay(true)}
-              className="flex min-h-[2.5rem] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full border-2 border-text/30 bg-panel/80 px-2.5 py-1.5 font-display text-xs sm:text-sm font-bold text-text hover:border-text/50 hover:bg-panel text-center leading-snug break-words"
+              className="flex min-h-[2.75rem] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-2xl border-2 border-text/30 bg-panel/85 px-2.5 py-1.5 font-display text-xs sm:text-sm font-bold text-text hover:border-text/50 hover:bg-panel text-center leading-snug transition active:scale-95"
             >
-              <BookOpen size={15} strokeWidth={2.2} className="text-go shrink-0" />
-              <span className="py-0.5">{t('welcome.howToPlay')}</span>
+              <BookOpen size={16} strokeWidth={2.2} className="text-go shrink-0" />
+              <span className="py-0.5 whitespace-nowrap">{t('welcome.howToPlay')}</span>
             </button>
 
             {onOpenTour && (
               <button
                 onClick={onOpenTour}
-                className="flex min-h-[2.5rem] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full border-2 border-go/40 bg-panel/80 px-2.5 py-1.5 font-display text-xs sm:text-sm font-bold text-go hover:border-go hover:bg-panel shadow-sm text-center leading-snug break-words"
+                className="flex min-h-[2.75rem] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-2xl border-2 border-go/40 bg-panel/85 px-2.5 py-1.5 font-display text-xs sm:text-sm font-bold text-go hover:border-go hover:bg-panel shadow-sm text-center leading-snug transition active:scale-95"
               >
-                <Sparkles size={14} strokeWidth={2.2} className="shrink-0" />
-                <span className="py-0.5">{t('welcome.tour')}</span>
+                <Sparkles size={15} strokeWidth={2.2} className="shrink-0" />
+                <span className="py-0.5 whitespace-nowrap">{t('welcome.tour')}</span>
               </button>
             )}
           </div>
         </div>
       </main>
 
-      <p className="relative z-10 pt-3 text-xs font-semibold text-text/60">{t('welcome.credit')}</p>
+      <p className="relative z-10 pt-3 pb-2 text-xs font-semibold text-text/60">{t('welcome.credit')}</p>
 
       {showHowToPlay ? <HowToPlay onClose={() => setShowHowToPlay(false)} /> : null}
     </div>

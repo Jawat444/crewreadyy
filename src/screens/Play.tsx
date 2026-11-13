@@ -287,7 +287,7 @@ export function Play() {
           </div>
         </div>
 
-        <div className="relative min-h-max md:min-h-0 flex-1 flex flex-col">
+        <div className="relative min-h-0 flex-1 flex flex-col">
           {outcome ? (
             <div ref={resultRef} className="rise flex h-full min-h-0 flex-col gap-[0.5rem]">
               <ResultMoment

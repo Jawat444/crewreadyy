@@ -179,7 +179,7 @@ export function MissionMap() {
 
   return (
     <Scene bare place="mars" rail={<Dock />}>
-      <div className="flex min-h-0 flex-1 flex-col gap-[0.375rem] px-[0.75rem] pt-[0.5rem] pb-[0.5rem]">
+      <div className="flex min-h-0 flex-1 flex-col gap-[0.375rem] px-[0.75rem] pt-[0.5rem] pb-28 md:pb-[0.5rem]">
         {/* Top row: Home, title and progress, stars */}
         <header className="flex items-center gap-[0.625rem]">
           <RoundButton icon={House} label={t('nav.home')} onClick={() => go('home')} className="!mb-[0.3rem] !h-[2.75rem] !w-[2.75rem]" />

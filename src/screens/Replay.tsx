@@ -82,7 +82,7 @@ export function Replay() {
         <AlarmBanner title={t('replay.paused')} sub={t('replay.nobodyHurt')} />
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col md:flex-row gap-2 sm:gap-3 px-2 sm:px-3 pt-2 pb-2">
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row gap-2 sm:gap-3 px-2 sm:px-3 pt-2 pb-2 overflow-y-auto md:overflow-visible">
         {/* Left: Twinkle, worried, standing in the scene. */}
         <div className="flex min-h-0 w-full md:w-[18%] shrink-0 items-center md:items-end justify-center max-h-[6rem] md:max-h-none">
           <span className="anim-pop-in">

@@ -34,13 +34,13 @@ export const totalChange = (o: Pick<Outcome, 'delta'>) => METERS.reduce((a, m) =
  */
 export function LevelZones({ left, children }: { left?: ReactNode; children: ReactNode }) {
   return (
-    <div className="flex min-h-full md:min-h-0 flex-1 flex-col md:flex-row gap-2 sm:gap-3 px-2 sm:px-3 pt-2 pb-2">
+    <div className="flex min-h-0 flex-1 flex-col md:flex-row gap-2 sm:gap-3 px-2 sm:px-3 pt-2 pb-2 overflow-y-auto md:overflow-visible">
       {left ? (
-        <div className="flex min-h-0 w-full md:w-[30%] lg:w-[34%] shrink-0 flex-col items-center justify-end gap-1 max-h-[5rem] sm:max-h-[8rem] md:max-h-none overflow-hidden md:overflow-visible">
+        <div className="flex min-h-0 w-full md:w-[30%] lg:w-[34%] shrink-0 flex-col items-center justify-end gap-1 max-h-[4rem] sm:max-h-[6rem] md:max-h-none overflow-hidden md:overflow-visible">
           {left}
         </div>
       ) : null}
-      <div className="flex min-h-full md:min-h-0 min-w-0 flex-1 flex-col gap-1.5 sm:gap-2">{children}</div>
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-1.5 sm:gap-2">{children}</div>
     </div>
   );
 }
