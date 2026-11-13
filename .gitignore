@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Environment Variables & Keys
+.env
+.env.local
+.env.*.local
+
+# Build Outputs
+dist/
+dist-ssr/
+*.local
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Word lock files, local tool settings
+~$*
+.claude/settings.local.json
+
+# Third-party reference PDFs and guides (not ours to republish)
+nasa guidelines/
+
+.vercel
+.netlify
+
+*.tsbuildinfo
+
+# Test artifacts
+playwright-report/
+test-results/
+screenshots/

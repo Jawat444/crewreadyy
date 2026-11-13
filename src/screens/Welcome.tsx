@@ -1,0 +1,298 @@
+// Welcome (BUILD_SEQUENCE.md R2). Shown on every load, inside the landscape Stage:
+// title, Play and How to Play on the left; the crew art on the right two-thirds.
+// The bar follows real loading (fonts, images decoded, the save read): at least 1.8 s, at most 5 s.
+import { useEffect, useState } from 'react';
+import { BookOpen, Hand, Orbit as OrbitIcon, Play, RotateCcw, Sparkles, X } from 'lucide-react';
+import { t, useI18n } from '../content/i18n';
+import { useGame } from '../store/game';
+import { useSpace } from '../store/space';
+import { MeterBadge } from '../components/meters';
+import { reducedMotion } from '../components/motion';
+import { MusicToggle } from '../components/MusicToggle';
+
+interface WelcomeProps {
+  onStart: () => void;
+  onOpenTour?: () => void;
+}
+
+const artPath = (name: string) => `${import.meta.env.BASE_URL}art/${name}.webp`;
+const WELCOME_ART = [artPath('welcome-1'), artPath('welcome-2')];
+// The crew poses the hook and the "Turn your phone" hint show first.
+const FIRST_SCENE_ART = [
+  artPath('orbit-think'),
+  artPath('orbit-surprised'),
+  artPath('nova-think'),
+  artPath('twinkle-happy'),
+  artPath('twinkle-surprised'),
+  artPath('twinkle-question'),
+];
+const MIN_MS = 1000;
+const MAX_MS = 4000;
+
+/** Real loading, as a 0–100 number plus a flag. Counts: fonts, save read, NASA data, every image decoded. */
+function useRealLoading() {
+  const [done, setDone] = useState(0);
+  const [now, setNow] = useState(0);
+  const total = 3 + WELCOME_ART.length + FIRST_SCENE_ART.length;
+
+  useEffect(() => {
+    let alive = true;
+    const tick = () => alive && setDone((d) => d + 1);
+    const settle = (p: Promise<unknown>) => void p.catch(() => {}).then(tick);
+
+    settle(document.fonts ? Promise.all([document.fonts.load('800 1rem "Baloo Da 2"'), document.fonts.load('700 1rem Nunito'), document.fonts.ready]) : Promise.resolve());
+    settle(
+      new Promise<void>((resolve) => {
+        if (useGame.persist.hasHydrated()) return resolve();
+        const off = useGame.persist.onFinishHydration(() => {
+          off();
+          resolve();
+        });
+      }),
+    );
+    settle(useSpace.getState().load());
+    [...WELCOME_ART, ...FIRST_SCENE_ART].forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      settle(img.decode());
+    });
+
+    const start = performance.now();
+    const timer = setInterval(() => setNow(performance.now() - start), 40);
+    return () => {
+      alive = false;
+      clearInterval(timer);
+    };
+  }, []);
+
+  const real = Math.min(1, done / total);
+  const paced = Math.min(1, now / MIN_MS);
+  const timedOut = now >= MAX_MS;
+  const progress = timedOut ? 100 : Math.floor(Math.min(real, paced) * 100);
+  return { progress, ready: progress >= 100 };
+}
+
+export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
+  const { lang, setLang } = useI18n();
+  const { progress, ready } = useRealLoading();
+  const [showHowToPlay, setShowHowToPlay] = useState(false);
+  const cut = reducedMotion();
+  const nasaWeather = useSpace((s) => s.weather);
+  const nasaLoading = nasaWeather === null;
+
+  const handlePlay = () => {
+    // Full screen and a landscape lock on a real tap. A refusal is ignored silently.
+    try {
+      if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+        document.documentElement
+          .requestFullscreen()
+          .then(() => (screen.orientation as unknown as { lock?: (o: string) => Promise<void> }).lock?.('landscape'))
+          .catch(() => {});
+      }
+    } catch {
+      /* ignore */
+    }
+    onStart();
+  };
+
+  // The real-looking kids turn into the game crew as the bar fills. Reduced motion: one straight cut when ready.
+  const crossfade = cut ? (ready ? 1 : 0) : Math.min(1, Math.max(0, (progress - 15) / 75));
+  const fade = cut ? '' : 'transition-opacity duration-700 ease-in-out';
+
+  // "Checking today's Sun with NASA..." shows while the real NASA space-weather call runs.
+  const loadingText =
+    progress >= 98
+      ? t('welcome.ready')
+      : nasaLoading
+        ? t('welcome.loading.nasa')
+        : lang === 'bn' || progress < 30
+          ? t('welcome.loading')
+          : progress < 65
+            ? t('welcome.loading.life')
+            : t('welcome.loading.twinkle');
+
+  return (
+    <div className="relative min-h-full w-full overflow-y-auto overflow-x-hidden bg-space-deep text-text select-none flex flex-col justify-between p-3 sm:p-6 md:p-8">
+      {/* Background Welcome Art with smooth crossfade */}
+      <div className="pointer-events-none absolute inset-0 md:left-auto md:right-0 md:w-[68%]" aria-hidden="true">
+        {WELCOME_ART.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt=""
+            className={`absolute inset-0 h-full w-full object-cover object-center md:object-right ${fade}`}
+            style={{ opacity: i === 0 ? 1 - crossfade : crossfade }}
+          />
+        ))}
+        {/* Soft fade into backdrop */}
+        <div className="absolute inset-0 bg-space-deep/80 md:bg-transparent" />
+        <div className="hidden md:block absolute inset-y-0 left-0 w-[35%] bg-gradient-to-r from-space-deep via-space-deep/80 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-space-deep/70 to-transparent" />
+      </div>
+
+      {/* Top strip: brand on the left, music & language switch on the right */}
+      <header className="relative z-20 flex items-center justify-between gap-2 pb-4">
+        <div className="flex items-center gap-2">
+          <div className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full border border-go/40 bg-go/20 text-go shrink-0">
+            <OrbitIcon size={20} strokeWidth={2.2} />
+          </div>
+          <span className="font-display text-xs sm:text-sm font-bold tracking-[0.2em] text-go uppercase">{t('app.tagline')}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <MusicToggle compact />
+          <div role="group" aria-label="Language" className="flex items-center rounded-full border border-text/20 bg-panel/90 p-1">
+            {(['en', 'bn'] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                aria-pressed={lang === l}
+                className={`min-h-[2.25rem] min-w-[2.25rem] cursor-pointer rounded-full px-3 font-display text-xs sm:text-sm font-extrabold transition ${
+                  lang === l ? 'bg-go text-go-text shadow-sm' : 'text-text/70 hover:text-text'
+                }`}
+              >
+                {l === 'en' ? 'EN' : 'বাংলা'}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* Left zone: title, Play (or the bar), How to Play, Twinkle's Tour */}
+      <main className="relative z-10 flex flex-col justify-center gap-3 sm:gap-4 my-auto max-w-lg md:w-[48%]">
+        <div>
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-none font-extrabold tracking-tight text-text drop-shadow-[0_4px_16px_rgba(0,0,0,0.7)] break-words">
+            {t('app.name')}
+          </h1>
+          <p className="mt-1.5 font-display text-base sm:text-xl leading-snug font-semibold text-text/90 drop-shadow">
+            {t('app.subtitle')}
+          </p>
+        </div>
+
+        <div className="flex w-full max-w-xs sm:max-w-sm flex-col gap-2.5">
+          {ready ? (
+            <button
+              onClick={handlePlay}
+              autoFocus
+              className="anim-pop group flex min-h-[3.25rem] sm:min-h-[3.5rem] w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#48e3f0] to-go px-5 sm:px-7 py-2 font-display text-lg sm:text-2xl font-extrabold text-go-text leading-snug break-words text-center shadow-[0_0_1.25rem_rgba(34,215,230,0.45),0_0.35rem_0_var(--color-go-lip)] active:translate-y-[0.25rem] active:shadow-none"
+            >
+              <Play size={20} strokeWidth={2.75} fill="currentColor" className="shrink-0" />
+              <span className="py-0.5 leading-snug">{t('welcome.play')}</span>
+            </button>
+          ) : (
+            <div
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={progress}
+              aria-label={loadingText}
+              className="relative flex h-[3.25rem] w-full items-center overflow-hidden rounded-full border-2 border-go/40 bg-panel/85 p-1"
+            >
+              <div className="h-full rounded-full bg-gradient-to-r from-[#0f8f9c] to-go" style={{ width: `${progress}%` }} />
+              <div className="absolute inset-0 flex items-center justify-between px-3.5 font-display text-xs sm:text-sm font-extrabold text-text">
+                <span className="flex items-center gap-1.5 truncate">
+                  <Sparkles size={16} className="shrink-0 text-go" />
+                  <span className="truncate">{loadingText}</span>
+                </span>
+                <span className="ml-2 tabular-nums text-go">{progress}%</span>
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-2 w-full">
+            <button
+              onClick={() => setShowHowToPlay(true)}
+              className="flex min-h-[2.5rem] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full border-2 border-text/30 bg-panel/80 px-2.5 py-1.5 font-display text-xs sm:text-sm font-bold text-text hover:border-text/50 hover:bg-panel text-center leading-snug break-words"
+            >
+              <BookOpen size={15} strokeWidth={2.2} className="text-go shrink-0" />
+              <span className="py-0.5">{t('welcome.howToPlay')}</span>
+            </button>
+
+            {onOpenTour && (
+              <button
+                onClick={onOpenTour}
+                className="flex min-h-[2.5rem] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full border-2 border-go/40 bg-panel/80 px-2.5 py-1.5 font-display text-xs sm:text-sm font-bold text-go hover:border-go hover:bg-panel shadow-sm text-center leading-snug break-words"
+              >
+                <Sparkles size={14} strokeWidth={2.2} className="shrink-0" />
+                <span className="py-0.5">{t('welcome.tour')}</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </main>
+
+      <p className="relative z-10 pt-3 text-xs font-semibold text-text/60">{t('welcome.credit')}</p>
+
+      {showHowToPlay ? <HowToPlay onClose={() => setShowHowToPlay(false)} /> : null}
+    </div>
+  );
+}
+
+/** Three picture panels, one line each. */
+function HowToPlay({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const on = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', on);
+    return () => window.removeEventListener('keydown', on);
+  }, [onClose]);
+
+  const panels = [
+    {
+      line: t('howToPlay.p1'),
+      art: (
+        <div className="flex gap-[0.375rem]">
+          {(['P', 'L', 'F', 'S'] as const).map((m) => (
+            <MeterBadge key={m} meter={m} size={34} />
+          ))}
+        </div>
+      ),
+    },
+    {
+      line: t('howToPlay.p2'),
+      art: (
+        <div className="flex items-center gap-[0.5rem]">
+          <Hand size={34} className="text-text" />
+          <span className="rounded-[0.75rem] bg-go px-[0.75rem] py-[0.25rem] font-display text-[1.25rem] font-extrabold text-go-text shadow-[0_0.2rem_0_var(--color-go-lip)]">GO</span>
+        </div>
+      ),
+    },
+    {
+      line: t('howToPlay.p3'),
+      art: (
+        <div className="flex items-center gap-[0.5rem]">
+          <span className="grid h-[2.125rem] w-[2.125rem] place-items-center rounded-full bg-[#d93a3a] font-display font-extrabold text-white">0</span>
+          <RotateCcw size={30} className="text-go" />
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div role="dialog" aria-modal="true" aria-label={t('howToPlay.title')} className="absolute inset-0 z-50 grid place-items-center bg-space-deep/85 p-[1rem]">
+      <div className="relative w-full max-w-[40rem] rounded-[1.5rem] border-2 border-line bg-panel p-[1rem]">
+        <div className="mb-[0.75rem] flex items-center justify-between">
+          <h2 className="font-display text-[1.5rem] font-extrabold">{t('howToPlay.title')}</h2>
+          <button onClick={onClose} aria-label={t('howToPlay.close')} className="grid h-[2.75rem] w-[2.75rem] cursor-pointer place-items-center rounded-full bg-text/10 hover:bg-text/20">
+            <X size={20} />
+          </button>
+        </div>
+        <ol className="grid grid-cols-3 gap-[0.75rem]">
+          {panels.map((p, i) => (
+            <li key={i} className="flex flex-col items-center gap-[0.75rem] rounded-[1rem] border-2 border-line bg-panel-up p-[0.75rem] text-center">
+              <span className="grid h-[1.75rem] w-[1.75rem] place-items-center rounded-full bg-go font-display font-extrabold text-go-text">{i + 1}</span>
+              <div className="grid min-h-[3rem] place-items-center">{p.art}</div>
+              <p className="font-sans text-[1rem] leading-snug font-bold">{p.line}</p>
+            </li>
+          ))}
+        </ol>
+        <button
+          onClick={onClose}
+          autoFocus
+          className="mt-[1rem] min-h-[2.75rem] w-full cursor-pointer rounded-full bg-gradient-to-b from-[#48e3f0] to-go px-4 py-2 font-display text-base sm:text-lg font-extrabold text-go-text leading-snug break-words shadow-[0_0.35rem_0_var(--color-go-lip)] active:translate-y-[0.25rem] active:shadow-[0_0.1rem_0_var(--color-go-lip)]"
+        >
+          {t('howToPlay.close')}
+        </button>
+      </div>
+    </div>
+  );
+}
