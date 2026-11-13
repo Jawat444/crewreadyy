@@ -33,7 +33,7 @@ export function Crates({ step, game, onDone }: { step: CratesStep; game: GameSta
   };
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2">
+    <div className="flex flex-col gap-2 md:flex-1 md:min-h-0">
       <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0">
         {/* The launch pad: crates still to pack. */}
         <div ref={pad} className="flex min-h-[3rem] min-w-0 flex-1 flex-wrap items-center gap-1 rounded-tile border-2 border-line bg-panel px-2.5 py-1" aria-live="polite">
@@ -62,24 +62,24 @@ export function Crates({ step, game, onDone }: { step: CratesStep; game: GameSta
         </GameButton>
       </div>
 
-      <div className="grid min-h-0 flex-1 grid-cols-2 md:grid-cols-4 gap-2 auto-rows-max sm:auto-rows-fr pb-1">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:flex-1 md:min-h-0 pb-1">
         {step.bins.map((b, i) => {
           const now = game.meters[b.meter];
           const after = Math.min(100, now + counts[i] * step.perCrate);
           return (
-            <div key={b.meter} className="flex flex-col rounded-tile border-2 border-line bg-panel text-text">
-              <div className="flex items-center gap-[0.25rem] rounded-t-[0.875rem] px-[0.25rem] py-[0.25rem]" style={{ background: `color-mix(in srgb, ${METER_COLOR[b.meter]} 55%, #14204d)` }}>
+            <div key={b.meter} className="flex min-h-[10.5rem] sm:min-h-0 flex-col rounded-tile border-2 border-line bg-panel text-text">
+              <div className="flex items-center gap-1 rounded-t-[0.875rem] px-2 py-1.5" style={{ background: `color-mix(in srgb, ${METER_COLOR[b.meter]} 55%, #14204d)` }}>
                 <MeterBadge meter={b.meter} size={22} />
                 <span className="min-w-0 font-display text-[0.6875rem] sm:text-[0.75rem] leading-[1.15] font-extrabold break-words line-clamp-2">{tMission(b.label)}</span>
               </div>
 
               {/* The stack: tap it to send the top crate back to the pad. */}
-              <div className="min-h-0 flex-1 px-[0.25rem] pt-[0.25rem]">
+              <div className="min-h-0 flex-1 px-1 pt-1">
                 <ToyArea
                   onClick={() => takeBack(i)}
                   disabled={!counts[i]}
                   label={`Take a crate out of ${tMission(b.label)}. It has ${counts[i]}.`}
-                  className="flex h-full min-h-[2.5rem] w-full flex-wrap-reverse content-start items-end justify-center gap-[0.125rem] overflow-hidden !bg-space-deep px-[0.125rem] py-[0.25rem] disabled:!bg-space-deep"
+                  className="flex h-full min-h-[2.5rem] w-full flex-wrap-reverse content-start items-end justify-center gap-[0.125rem] overflow-hidden !bg-space-deep px-[0.125rem] py-[0.25rem] disabled:!bg-space-deep !mb-0"
                 >
                   <span ref={(el) => void (stacks.current[i] = el)} className="flex flex-wrap-reverse justify-center gap-[0.125rem]">
                     {counts[i] ? (
@@ -93,13 +93,13 @@ export function Crates({ step, game, onDone }: { step: CratesStep; game: GameSta
               </div>
 
               {/* Meter now, and a ghost bar for where it will end up. */}
-              <div className="px-[0.25rem]">
-                <p className="font-display text-[0.875rem] leading-none font-extrabold tabular-nums">
+              <div className="px-1.5 py-1">
+                <div className="flex items-baseline justify-between font-display text-[0.8125rem] sm:text-[0.875rem] leading-tight font-extrabold tabular-nums">
                   <span className="sr-only">{METER_NAMES[b.meter]}: </span>
-                  {now}
-                  {counts[i] ? <span className="text-[#3ddc84]"> → {after}</span> : null}
-                </p>
-                <div className="relative mt-[0.125rem] h-[0.5rem] overflow-hidden rounded-full border border-line bg-space-deep" aria-hidden>
+                  <span className="text-muted/90">{now}</span>
+                  {counts[i] ? <span className="text-[#3ddc84] font-black"> → {after}</span> : null}
+                </div>
+                <div className="relative mt-1 h-[0.5rem] overflow-hidden rounded-full border border-line bg-space-deep" aria-hidden>
                   <div
                     className="absolute inset-y-0 left-0 transition-[width] duration-300"
                     style={{ width: `${after}%`, background: `repeating-linear-gradient(135deg, ${METER_COLOR[b.meter]} 0 5px, transparent 5px 9px)` }}
@@ -108,12 +108,12 @@ export function Crates({ step, game, onDone }: { step: CratesStep; game: GameSta
                 </div>
               </div>
 
-              <div className="px-[0.25rem] pt-[0.25rem]">
+              <div className="px-1 pt-0.5 pb-1">
                 <ToyArea
                   onClick={() => add(i)}
                   disabled={left === 0}
                   label={`Put a crate in ${b.label}`}
-                  className="flex min-h-[2.5rem] w-full items-center justify-center gap-[0.25rem] bg-crate font-display text-[0.875rem] sm:text-[0.9375rem] font-extrabold text-white [--lip:var(--color-crate-lip)] disabled:bg-locked disabled:text-muted disabled:[--lip:var(--color-locked-lip)]"
+                  className="flex min-h-[2.5rem] w-full items-center justify-center gap-[0.25rem] bg-crate font-display text-[0.875rem] sm:text-[0.9375rem] font-extrabold text-white [--lip:var(--color-crate-lip)] disabled:bg-locked disabled:text-muted disabled:[--lip:var(--color-locked-lip)] !mb-0"
                 >
                   <Plus size={16} strokeWidth={3.25} aria-hidden /> {lang === 'bn' ? 'ক্রেট' : 'Crate'}
                 </ToyArea>
