@@ -78,6 +78,32 @@ export function kidPose(who: 'orbit' | 'nova', r: Reaction): OrbitPose | NovaPos
 /** Twinkle's face for the same moments. */
 export const TWINKLE_FOR: Record<Reaction, TwinkleMood> = { choosing: 'question', good: 'happy', 'small-loss': 'neutral', 'big-loss': 'surprised' };
 
+/**
+ * Twinkle's Gen Alpha one-liners for the result heading. Short (≤ 20 characters) so they fit the panel ribbon.
+ * Bangla keeps the English slang words, the way Bangladeshi kids actually say them.
+ */
+export const TWINKLE_SLANG: Record<Exclude<Reaction, 'choosing'>, { en: string; bn: string }[]> = {
+  good: [
+    { en: 'Big W, Commander!', bn: 'বিগ W, কমান্ডার!' },
+    { en: 'No cap, smart move!', bn: 'নো ক্যাপ, স্মার্ট চাল!' },
+    { en: 'Main character move!', bn: 'মেইন ক্যারেক্টার মুভ!' },
+  ],
+  'small-loss': [
+    { en: 'Lowkey costly. Okay!', bn: 'লো-কি খরচ হলো, চলবে!' },
+    { en: 'Kinda mid, we live.', bn: 'একটু মিড, তবু টিকে আছি।' },
+  ],
+  'big-loss': [
+    { en: "Oof, that's an L.", bn: 'উফ, এটা একটা L।' },
+    { en: 'Big oof. Learn it!', bn: 'বিগ উফ! শিখে নাও!' },
+  ],
+};
+
+/** Picks Twinkle's line for a result. Same `seed` always gives the same line, so a replay looks the same. */
+export function twinkleLine(r: Reaction, lang: 'en' | 'bn', seed: number): string {
+  const pool = TWINKLE_SLANG[r === 'choosing' ? 'good' : r];
+  return pool[Math.abs(Math.trunc(seed)) % pool.length][lang];
+}
+
 /** A total change of 15 or more down counts as a big loss. */
 export function reactionFor(totalChange: number): Reaction {
   if (totalChange >= 0) return 'good';
