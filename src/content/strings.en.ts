@@ -3,7 +3,7 @@ export const stringsEn: Record<string, string> = {
   'app.name': 'CrewReady',
   'app.tagline': 'BEYOND US',
   'app.subtitle': 'Junior Space Hero Training',
-  'welcome.play': 'Play Mission',
+  'welcome.play': 'Play',
   'welcome.howToPlay': 'How to Play',
   'welcome.tour': "Twinkle's Tour",
   'welcome.loading': 'Preparing Mission…',

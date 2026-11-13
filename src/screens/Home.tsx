@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Map as MapIcon, Play, RotateCcw, Rocket, Sparkles, Volume2, Square, Bot, HelpCircle } from 'lucide-react';
+import { BookOpen, Map as MapIcon, Play, RotateCcw, Rocket, Sparkles, Volume2, Square, Bot, HelpCircle } from 'lucide-react';
 import { Dock } from '../components/Dock';
 import { StarCounter, StardustCounter } from '../components/Hud';
 import { MusicToggle } from '../components/MusicToggle';
@@ -197,12 +197,19 @@ export function Home() {
 
   return (
     <Scene bare place="space" rail={<Dock />}>
-      {/* Background Image: Kids in Observatory overlooking Earth (Screenshot 2 / public/art/home-bg.jpg) */}
+      {/* Background Image: Kids in Observatory overlooking Earth (Matching Image 1 & 2) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
+        {/* Mobile vertical portrait image (Image 2) */}
+        <img
+          src="/art/home-bg-vertical.jpg"
+          alt=""
+          className="md:hidden absolute inset-x-0 -top-52 sm:-top-60 h-[calc(100%+16rem)] w-full object-cover object-[center_top]"
+        />
+        {/* Desktop widescreen landscape image */}
         <img
           src="/art/home-bg.jpg"
           alt=""
-          className="h-full w-full object-cover object-[center_30%] md:object-[35%_center]"
+          className="hidden md:block h-full w-full object-cover object-[35%_center]"
         />
         {/* Dark overlay for crystal clear text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#070B1E]/75 via-transparent to-[#070B1E]/95 md:from-[#070B1E]/50 md:via-[#070B1E]/30 md:to-[#070B1E]/90" />
@@ -210,9 +217,9 @@ export function Home() {
 
       {/* Main Responsive Container */}
       <div className="relative z-10 flex min-h-full flex-1 flex-col justify-between p-3 sm:p-5 md:p-6 pb-28 sm:pb-32 md:pb-6 overflow-y-auto">
-        {/* ================= MOBILE VIEW (< md) ================= */}
+        {/* ================= MOBILE VIEW (< md) (Matching Image 1) ================= */}
         <div className="md:hidden flex flex-col gap-2.5 min-h-0">
-          {/* Mobile Top Header: Logo + Stars + Stardust + Sound */}
+          {/* Mobile Top Header: Logo + Stars + Sound */}
           <div className="flex items-center justify-between">
             <CrewReadyLogo />
             <div className="flex items-center gap-1.5">
@@ -223,7 +230,7 @@ export function Home() {
           </div>
 
           {/* Twinkle Speech Bubble */}
-          <div className="flex items-center gap-2 mt-0.5">
+          <div className="flex items-center gap-2.5 mt-1">
             <div
               onClick={() => setShowTour(true)}
               className="relative shrink-0 cursor-pointer active:scale-95 transition"
@@ -233,12 +240,12 @@ export function Home() {
               <img
                 src="/art/twinkle-happy.webp"
                 alt="Twinkle"
-                className="relative h-10 w-10 object-contain drop-shadow-[0_0_8px_rgba(34,215,230,0.6)]"
+                className="relative h-11 w-11 object-contain drop-shadow-[0_0_10px_rgba(34,215,230,0.6)]"
               />
             </div>
 
-            <div className="relative flex min-w-0 flex-1 items-center justify-between rounded-2xl border border-cyan-400/35 bg-[#091332]/85 px-3 py-1.5 text-white shadow-lg backdrop-blur-xl">
-              <span className="font-display text-xs sm:text-sm font-extrabold text-white leading-tight">
+            <div className="relative flex min-w-0 flex-1 items-center justify-between rounded-2xl border border-cyan-400/40 bg-[#091332]/85 px-3.5 py-2 text-white shadow-lg backdrop-blur-xl">
+              <span className="font-display text-sm font-extrabold text-white leading-tight">
                 {welcomeText}
               </span>
               {canSpeak && (
@@ -246,91 +253,80 @@ export function Home() {
                   type="button"
                   onClick={handleSpeak}
                   aria-label={speaking ? 'Stop reading' : 'Read aloud'}
-                  className="ml-2 grid h-6 w-6 shrink-0 place-items-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 active:scale-90 transition cursor-pointer"
+                  className="ml-2 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 active:scale-90 transition cursor-pointer"
                 >
-                  {speaking ? <Square size={10} strokeWidth={2.5} /> : <Volume2 size={13} strokeWidth={2.2} />}
+                  {speaking ? <Square size={11} strokeWidth={2.5} /> : <Volume2 size={15} strokeWidth={2.2} />}
                 </button>
               )}
             </div>
           </div>
 
-          {/* Flexible Middle Spacer showing kids in observatory */}
-          <div className="min-h-[0.5rem] max-h-[1.5rem] flex-1" />
+          {/* Flexible Middle Spacer displaying Nova & Orbit from background art */}
+          <div className="h-[15.5rem] sm:h-[18rem] shrink-0 pointer-events-none" />
 
-          {/* Action Buttons Section */}
+          {/* Action Buttons Section matching Image 1 */}
           <div className="flex flex-col gap-2">
             {/* 1. Big Cyan Primary Button: Continue / Play */}
             <button
               onClick={() => (inProgress ? go('level') : startMission())}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-5 rounded-full bg-gradient-to-r from-[#22D7E6] to-[#0F8F9C] text-[#06202B] font-display text-base sm:text-lg font-black shadow-[0_0_24px_rgba(34,215,230,0.55),0_3px_0_#0A5B64] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-6 rounded-full bg-gradient-to-r from-[#22D7E6] to-[#0F8F9C] text-[#06202B] font-display text-base sm:text-lg font-black shadow-[0_0_24px_rgba(34,215,230,0.6),0_3px_0_#0A5B64] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
             >
               <Play size={18} className="fill-current text-[#06202B]" />
               <span>
-                {inProgress ? `${t('home.continue')} ${levelIndex + 1}` : `${t('home.play')} — Level 1`}
+                {inProgress ? `${t('home.continue')} — Level ${levelIndex + 1}` : 'Continue — Level 1'}
               </span>
             </button>
 
-            {/* 2. Secondary Row 1: Level Map & Start Over */}
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => go('map')}
-                className="flex items-center gap-2 px-3 py-2 rounded-2xl border border-white/20 bg-[#0E1B45]/85 hover:bg-[#142357] text-white shadow-md backdrop-blur-md text-left active:scale-[0.98] transition cursor-pointer"
-              >
-                <MapIcon size={18} className="text-cyan-400 shrink-0" />
-                <div className="min-w-0 flex-1 leading-tight">
-                  <div className="font-display text-xs font-black text-white">
-                    {t('home.mapLevel')} {levelIndex + 1} / {LEVELS.length}
-                  </div>
-                  <div className="text-[0.5625rem] font-bold text-muted/80 truncate">
-                    {t('home.seeMap')}
-                  </div>
-                </div>
-              </button>
+            {/* 2. Secondary Button: Level 1/6 — See Mission Map (Full Width Pill) */}
+            <button
+              onClick={() => go('map')}
+              className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-full border border-cyan-400/40 bg-[#0E1B45]/85 hover:bg-[#142357] text-white shadow-md backdrop-blur-md active:scale-[0.98] transition cursor-pointer"
+            >
+              <BookOpen size={16} className="text-cyan-400 shrink-0" />
+              <span className="font-display text-xs sm:text-sm font-extrabold text-white">
+                {t('home.mapLevel')} {levelIndex + 1} / {LEVELS.length} — {t('home.seeMap')}
+              </span>
+            </button>
 
+            {/* 3. Secondary Row: Start Over & Fly side-by-side */}
+            <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => setConfirming(true)}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl border border-white/20 bg-[#0E1B45]/85 hover:bg-[#142357] text-white shadow-md backdrop-blur-md active:scale-[0.98] transition cursor-pointer"
+                className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-full border border-white/20 bg-[#0E1B45]/85 hover:bg-[#142357] text-white shadow-md backdrop-blur-md active:scale-[0.98] transition cursor-pointer"
               >
-                <RotateCcw size={16} className="text-cyan-400 shrink-0" />
+                <RotateCcw size={15} className="text-cyan-400 shrink-0" />
                 <span className="font-display text-xs sm:text-sm font-extrabold">{t('btn.startOver')}</span>
-              </button>
-            </div>
-
-            {/* 3. Secondary Row 2: Twinkle's Tour & Fly */}
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => setShowTour(true)}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl border border-white/20 bg-[#0E1B45]/85 hover:bg-[#142357] text-white shadow-md backdrop-blur-md active:scale-[0.98] transition cursor-pointer"
-              >
-                <Sparkles size={16} className="text-cyan-400 shrink-0" />
-                <span className="font-display text-xs sm:text-sm font-extrabold">{t('welcome.tour')}</span>
               </button>
 
               <button
                 onClick={() => go('fly')}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-gradient-to-r from-[#FF2B85] to-[#D91B6B] text-white font-display text-sm sm:text-base font-black shadow-[0_0_20px_rgba(255,43,133,0.6),0_3px_0_#9E0D4B] active:translate-y-0.5 active:shadow-none transition cursor-pointer"
+                className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-gradient-to-r from-[#FF2B85] to-[#D91B6B] text-white font-display text-xs sm:text-sm font-black shadow-[0_0_20px_rgba(255,43,133,0.6),0_3px_0_#9E0D4B] active:translate-y-0.5 active:shadow-none transition cursor-pointer"
               >
                 <Rocket size={16} className="text-white shrink-0 fill-white" />
-                <span>{t('nav.fly')}</span>
+                <span>{lang === 'bn' ? 'উড়ুন' : 'Fly'}</span>
               </button>
             </div>
 
-            {/* 4. Secondary Row 3: AI Chat & Explain Cards side-by-side */}
-            <div className="grid grid-cols-2 gap-2">
+            {/* 4. Twinkle's Tour Button (Full Width Pill) */}
+            <button
+              onClick={() => setShowTour(true)}
+              className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-full border border-cyan-400/40 bg-[#0E1B45]/85 hover:bg-[#142357] text-cyan-300 shadow-md backdrop-blur-md active:scale-[0.98] transition cursor-pointer"
+            >
+              <Sparkles size={15} className="text-cyan-400 shrink-0" />
+              <span className="font-display text-xs sm:text-sm font-extrabold">{t('welcome.tour')}</span>
+            </button>
+
+            {/* Extra Tools: AI Chat & Space Facts Pills (Hidden on small mobile to match Image 1) */}
+            <div className="hidden sm:grid grid-cols-2 gap-2 mt-0.5">
               <button
                 type="button"
                 onClick={() => setShowAiChat(true)}
-                className="flex items-center gap-2 px-3 py-2 rounded-2xl border border-cyan-400/40 bg-[#0E1B45]/90 hover:bg-[#142357] text-left shadow-md active:scale-[0.98] transition cursor-pointer"
+                className="flex items-center justify-center gap-2 py-1.5 px-3 rounded-full border border-cyan-400/30 bg-[#0A1435]/80 hover:bg-[#142357] text-left text-cyan-200 shadow-sm active:scale-95 transition cursor-pointer"
               >
-                <Bot size={18} className="text-go animate-pulse shrink-0" />
-                <div className="min-w-0 flex-1 leading-tight">
-                  <span className="font-display text-xs font-black text-white truncate block">
-                    {lang === 'bn' ? 'টুইঙ্কেল চ্যাট' : 'Twinkle AI'}
-                  </span>
-                  <span className="text-[9px] text-cyan-200/80 truncate block">
-                    {lang === 'bn' ? 'এআই সহচর' : 'Chat Robot'}
-                  </span>
-                </div>
+                <Bot size={15} className="text-go animate-pulse shrink-0" />
+                <span className="font-display text-xs font-bold truncate">
+                  {lang === 'bn' ? 'টুইঙ্কেল চ্যাট' : 'Twinkle AI'}
+                </span>
               </button>
 
               <button
@@ -339,15 +335,15 @@ export function Home() {
                   setExplainIndex((prev) => (prev + 1) % EXPLAIN_ENTRIES.length);
                   setShowExplain(true);
                 }}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl border border-amber-400/40 bg-[#0E1B45]/90 hover:bg-[#142357] text-amber-300 shadow-md active:scale-95 transition cursor-pointer"
+                className="flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-amber-400/30 bg-[#0A1435]/80 hover:bg-[#142357] text-amber-300 shadow-sm active:scale-95 transition cursor-pointer"
               >
-                <HelpCircle size={16} className="text-amber-400 shrink-0" />
-                <span className="font-display text-xs font-black truncate">{lang === 'bn' ? 'মহাকাশ জ্ঞান (?)' : 'Space Facts (?)'}</span>
+                <HelpCircle size={15} className="text-amber-400 shrink-0" />
+                <span className="font-display text-xs font-bold truncate">{lang === 'bn' ? 'মহাকাশ তথ্য' : 'Space Facts'}</span>
               </button>
             </div>
 
             {/* 5. Live Space Weather Card */}
-            <div className="mt-0.5">
+            <div className="mt-1">
               {kpNow ? (
                 <SpaceWeatherCard
                   kp={kpNow.data}

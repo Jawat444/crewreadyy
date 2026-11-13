@@ -2,13 +2,14 @@
 // title, Play and How to Play on the left; the crew art on the right two-thirds.
 // The bar follows real loading (fonts, images decoded, the save read): at least 1.8 s, at most 5 s.
 import { useEffect, useState } from 'react';
-import { BookOpen, Hand, Orbit as OrbitIcon, Play, RotateCcw, Smartphone, Sparkles, X } from 'lucide-react';
+import { BookOpen, Hand, Play, RotateCcw, Smartphone, Sparkles, X } from 'lucide-react';
 import { t, useI18n } from '../content/i18n';
 import { useGame } from '../store/game';
 import { useSpace } from '../store/space';
 import { MeterBadge } from '../components/meters';
 import { reducedMotion } from '../components/motion';
 import { MusicToggle } from '../components/MusicToggle';
+import { CrewReadyLogo } from './Home';
 
 interface WelcomeProps {
   onStart: () => void;
@@ -113,41 +114,44 @@ export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
 
   return (
     <div className="relative min-h-full w-full overflow-y-auto overflow-x-hidden bg-space-deep text-text select-none flex flex-col justify-between p-3 sm:p-6 md:p-8">
-      {/* Background Welcome Art with smooth crossfade */}
-      <div className="pointer-events-none absolute inset-0 md:left-auto md:right-0 md:w-[68%]" aria-hidden="true">
-        {WELCOME_ART.map((src, i) => (
-          <img
-            key={src}
-            src={src}
-            alt=""
-            className={`absolute inset-0 h-full w-full object-cover object-center md:object-right ${fade}`}
-            style={{ opacity: i === 0 ? 1 - crossfade : crossfade }}
-          />
-        ))}
-        {/* Soft fade into backdrop */}
-        <div className="absolute inset-0 bg-space-deep/80 md:bg-transparent" />
-        <div className="hidden md:block absolute inset-y-0 left-0 w-[35%] bg-gradient-to-r from-space-deep via-space-deep/80 to-transparent" />
-        <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-space-deep/70 to-transparent" />
+      {/* Background Welcome Art matching Image 3 & 4 */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        {/* Mobile vertical portrait artwork (Image 4) */}
+        <img
+          src="/art/welcome-bg-vertical.jpg"
+          alt=""
+          className="md:hidden absolute inset-0 h-full w-full object-cover object-bottom"
+        />
+        {/* Desktop landscape widescreen background with smooth crossfade */}
+        <div className="hidden md:block absolute inset-0 left-auto right-0 w-[68%]">
+          {WELCOME_ART.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              className={`absolute inset-0 h-full w-full object-cover object-right ${fade}`}
+              style={{ opacity: i === 0 ? 1 - crossfade : crossfade }}
+            />
+          ))}
+          <div className="absolute inset-y-0 left-0 w-[35%] bg-gradient-to-r from-space-deep via-space-deep/80 to-transparent" />
+        </div>
+        {/* Soft vignette for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-space-deep/80 via-transparent to-space-deep/80 md:bg-transparent" />
       </div>
 
       {/* Top strip: brand on the left, music & language switch on the right */}
-      <header className="relative z-20 flex items-center justify-between gap-2 pb-4">
-        <div className="flex items-center gap-2">
-          <div className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full border border-go/40 bg-go/20 text-go shrink-0">
-            <OrbitIcon size={20} strokeWidth={2.2} />
-          </div>
-          <span className="font-display text-xs sm:text-sm font-bold tracking-[0.2em] text-go uppercase">{t('app.tagline')}</span>
-        </div>
+      <header className="relative z-20 flex items-center justify-between gap-2 pb-2 sm:pb-4">
+        <CrewReadyLogo />
 
         <div className="flex items-center gap-2">
           <MusicToggle compact />
-          <div role="group" aria-label="Language" className="flex items-center rounded-full border border-text/20 bg-panel/90 p-1">
+          <div role="group" aria-label="Language" className="flex items-center rounded-full border border-cyan-400/30 bg-[#091332]/90 p-1 shadow-md backdrop-blur-md">
             {(['en', 'bn'] as const).map((l) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
                 aria-pressed={lang === l}
-                className={`min-h-[2.25rem] min-w-[2.25rem] cursor-pointer rounded-full px-3 font-display text-xs sm:text-sm font-extrabold transition ${
+                className={`min-h-[2.125rem] min-w-[2.125rem] cursor-pointer rounded-full px-3 font-display text-xs sm:text-sm font-extrabold transition ${
                   lang === l ? 'bg-go text-go-text shadow-sm' : 'text-text/70 hover:text-text'
                 }`}
               >
@@ -158,19 +162,19 @@ export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
         </div>
       </header>
 
-      {/* Left zone: title, Play (or the bar), How to Play, Twinkle's Tour */}
-      <main className="relative z-10 flex flex-col justify-center gap-3 sm:gap-4 my-auto max-w-lg md:w-[50%]">
+      {/* Left zone: title, Play (or the bar), How to Play, Twinkle's Tour (Matching Image 3) */}
+      <main className="relative z-10 flex flex-col justify-start md:justify-center gap-2.5 sm:gap-4 mt-1 mb-auto md:my-auto max-w-lg md:w-[50%]">
         <div>
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-none font-extrabold tracking-tight text-text drop-shadow-[0_4px_16px_rgba(0,0,0,0.7)] break-words">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.25rem] leading-none font-black italic tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] break-words">
             {t('app.name')}
           </h1>
-          <p className="mt-1.5 font-display text-base sm:text-xl leading-snug font-semibold text-text/90 drop-shadow">
-            {t('app.subtitle')}
+          <p className="mt-1 font-display text-base sm:text-xl font-bold tracking-wide text-text/90 drop-shadow">
+            {lang === 'bn' ? t('app.subtitle') : 'Junior Astronaut Training'}
           </p>
 
           {/* Small font instruction to rotate device / play in landscape */}
-          <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full border border-cyan-400/40 bg-[#081230]/85 px-3 py-1 font-display text-[11px] sm:text-xs font-semibold text-cyan-200/95 shadow-sm backdrop-blur-md">
-            <Smartphone size={13} className="text-go shrink-0" />
+          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-cyan-400/40 bg-[#081230]/85 px-3 py-0.5 font-display text-[11px] sm:text-xs font-semibold text-cyan-200/95 shadow-sm backdrop-blur-md">
+            <Smartphone size={12} className="text-go shrink-0" />
             <span>
               {lang === 'bn'
                 ? 'সেরা অভিজ্ঞতার জন্য ফোনটি আড়াআড়ি (landscape) ঘোরাও 🔄'
@@ -179,14 +183,15 @@ export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
           </div>
         </div>
 
+        {/* Vertically stacked full-width buttons matching Image 3 */}
         <div className="flex w-full max-w-xs sm:max-w-sm flex-col gap-2.5">
           {ready ? (
             <button
               onClick={handlePlay}
               autoFocus
-              className="anim-pop group flex min-h-[3.25rem] sm:min-h-[3.5rem] w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#48e3f0] to-go px-5 sm:px-7 py-2 font-display text-lg sm:text-2xl font-extrabold text-go-text leading-snug break-words text-center shadow-[0_0_1.25rem_rgba(34,215,230,0.45),0_0.35rem_0_var(--color-go-lip)] active:translate-y-[0.25rem] active:shadow-none"
+              className="anim-pop group flex min-h-[3.25rem] sm:min-h-[3.5rem] w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#22D7E6] to-[#0F8F9C] px-6 py-2.5 font-display text-lg sm:text-xl font-black text-[#06202B] leading-snug shadow-[0_0_24px_rgba(34,215,230,0.6),0_3px_0_#0A5B64] active:translate-y-0.5 active:shadow-none transition-all"
             >
-              <Play size={20} strokeWidth={2.75} fill="currentColor" className="shrink-0" />
+              <Play size={20} strokeWidth={2.75} fill="currentColor" className="shrink-0 fill-current" />
               <span className="py-0.5 leading-snug">{t('welcome.play')}</span>
             </button>
           ) : (
@@ -209,29 +214,29 @@ export function Welcome({ onStart, onOpenTour }: WelcomeProps) {
             </div>
           )}
 
-          <div className="flex gap-2 w-full">
-            <button
-              onClick={() => setShowHowToPlay(true)}
-              className="flex min-h-[2.75rem] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-2xl border-2 border-text/30 bg-panel/85 px-2.5 py-1.5 font-display text-xs sm:text-sm font-bold text-text hover:border-text/50 hover:bg-panel text-center leading-snug transition active:scale-95"
-            >
-              <BookOpen size={16} strokeWidth={2.2} className="text-go shrink-0" />
-              <span className="py-0.5 whitespace-nowrap">{t('welcome.howToPlay')}</span>
-            </button>
+          {/* How to Play Button (Full Width matching Image 3) */}
+          <button
+            onClick={() => setShowHowToPlay(true)}
+            className="flex min-h-[2.85rem] w-full cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-white/20 bg-[#0E1B45]/85 hover:bg-[#142357] px-4 py-2 font-display text-sm sm:text-base font-bold text-white shadow-md backdrop-blur-md text-center leading-snug transition active:scale-95"
+          >
+            <BookOpen size={18} strokeWidth={2.2} className="text-white shrink-0" />
+            <span className="py-0.5 whitespace-nowrap">{t('welcome.howToPlay')}</span>
+          </button>
 
-            {onOpenTour && (
-              <button
-                onClick={onOpenTour}
-                className="flex min-h-[2.75rem] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-2xl border-2 border-go/40 bg-panel/85 px-2.5 py-1.5 font-display text-xs sm:text-sm font-bold text-go hover:border-go hover:bg-panel shadow-sm text-center leading-snug transition active:scale-95"
-              >
-                <Sparkles size={15} strokeWidth={2.2} className="shrink-0" />
-                <span className="py-0.5 whitespace-nowrap">{t('welcome.tour')}</span>
-              </button>
-            )}
-          </div>
+          {/* Twinkle's Tour Button (Full Width matching Image 3) */}
+          {onOpenTour && (
+            <button
+              onClick={onOpenTour}
+              className="flex min-h-[2.85rem] w-full cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-cyan-400/40 bg-[#0E1B45]/85 hover:bg-[#142357] px-4 py-2 font-display text-sm sm:text-base font-bold text-cyan-300 hover:border-cyan-400 shadow-md backdrop-blur-md text-center leading-snug transition active:scale-95"
+            >
+              <Sparkles size={16} strokeWidth={2.2} className="shrink-0 text-cyan-400" />
+              <span className="py-0.5 whitespace-nowrap">{t('welcome.tour')}</span>
+            </button>
+          )}
         </div>
       </main>
 
-      <p className="relative z-10 pt-3 pb-2 text-xs font-semibold text-text/60">{t('welcome.credit')}</p>
+      <p className="relative z-10 pt-2 pb-1 text-[11px] sm:text-xs font-semibold text-text/60">{t('welcome.credit')}</p>
 
       {showHowToPlay ? <HowToPlay onClose={() => setShowHowToPlay(false)} /> : null}
     </div>
