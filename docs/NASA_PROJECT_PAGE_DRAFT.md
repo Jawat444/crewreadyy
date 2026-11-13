@@ -10,7 +10,7 @@ Fill the `[ ]` placeholders (links, team photo) before you submit. Nothing here 
 
 **CrewReady: Beyond Us** is a free browser game where kids aged 7–12 command a Mars mission across six levels. Earth is too full, so the crew must reach Mars alive. Every choice trades one of four meters (Power, Air & Water, Food, Shield) against another, so kids learn that space engineering is about trade-offs. Guided by Twinkle, a friendly robot, they meet real NASA science: solar storms, Mars dust, radio delay and growing food in space. The size of the in-game solar storm and the speed of the Fly runner come from today's real NASA and NOAA space-weather data. It runs offline in English and Bangla, so a classroom with weak internet can still play. The game collects no personal data.
 
-240-second video: `[YouTube link]` · GitHub: https://github.com/YSoB-x-ScriptySphere-2-0/CrewReady
+240-second video: `[YouTube link]` · GitHub: https://github.com/YSoB-x-ScriptySphere-2-0/crew_ready
 
 ## Project Demo
 
@@ -18,7 +18,7 @@ Fill the `[ ]` placeholders (links, team photo) before you submit. Nothing here 
 
 ## Final Project
 
-- Repository: https://github.com/YSoB-x-ScriptySphere-2-0/CrewReady (Apache-2.0)
+- Repository: https://github.com/YSoB-x-ScriptySphere-2-0/crew_ready (Apache-2.0)
 - Live game: `[deployed URL]`
 - Documentation: `README.md`, `docs/06_SCIENCE_AND_NASA_DATA.md` (every fact, with its NASA or NOAA source link), `docs/AI_USE.md`
 
