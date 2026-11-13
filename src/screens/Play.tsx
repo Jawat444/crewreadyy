@@ -15,7 +15,7 @@ import { hasToy, ToyHost } from '../components/toys';
 import { captionFor } from '../content/pictures';
 import { Scene } from '../components/Scene';
 import { StepView, USES_LEFT_ZONE } from '../components/steps';
-import { Bubble, Kid, kidPose, reactionFor, Twinkle, TWINKLE_FOR } from '../components/Twinkle';
+import { Bubble, Kid, kidPose, reactionFor, Twinkle, TWINKLE_FOR, twinkleLine } from '../components/Twinkle';
 import { iconFor, iconForEntry } from '../content/icons';
 import { LEVELS } from '../content/levels';
 import { METERS, METER_NAMES, type ChoiceStep, type GameState, type Level, type Meter, type Outcome } from '../engine/types';
@@ -90,7 +90,7 @@ function Hint({
           <Twinkle mood="question" size={48} />
           <div className="min-w-0">
             <p className="font-display text-[0.75rem] font-black tracking-wider text-amber-300 uppercase">
-              {bn ? 'প্রশ্নটি কী বলছে?' : 'What is this question about?'}
+              {bn ? 'বেস্টি, প্রশ্নটা কী চাইছে?' : "Bestie, what's this asking?"}
             </p>
             <p className="text-[0.9375rem] leading-snug font-bold">{tMission(step.prompt)}</p>
             <p className="mt-[0.25rem] text-[0.875rem] leading-snug text-muted">{explainStep(step, lang)}</p>
@@ -295,7 +295,7 @@ export function Play() {
                 outcome={outcome}
                 changes={changes}
                 fallback={ChosenIcon}
-                ribbon={reaction === 'good' ? (lang === 'bn' ? 'চমৎকার!' : 'Nice!') : (lang === 'bn' ? 'কী ঘটল' : 'What happened')}
+                ribbon={twinkleLine(reaction, lang === 'bn' ? 'bn' : 'en', levelIndex * 10 + stepIndex)}
                 tone={reaction === 'good' ? 'good' : 'danger'}
               />
               <div className="flex justify-end">
